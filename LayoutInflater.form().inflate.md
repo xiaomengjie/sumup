@@ -445,3 +445,93 @@ ViewStub:就是一个宽高都为0的一个View，它默认是不可见的
 2. 这里需要注意的一点是，当ViewStub被inflate到parent时，ViewStub就被remove掉了，即当前view hierarchy中不再存在ViewStub，而是使用对应的layout视图代替。
 ```
 
+#### onMeasure@ViewStub
+
+```java
+----> onMeasure@ViewStub:
+
+@Override
+protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+  	//宽高直接设置为0
+    setMeasuredDimension(0, 0);
+}
+
+----> setVisibility@ViewStub:
+public void setVisibility(int visibility) {
+  	//已经解析过了
+    if (mInflatedViewRef != null) {
+        View view = mInflatedViewRef.get();
+        if (view != null) {
+            view.setVisibility(visibility);
+        } else {
+            throw new IllegalStateException("setVisibility called on un-referenced view");
+        }
+    } else {
+        super.setVisibility(visibility);
+        if (visibility == VISIBLE || visibility == INVISIBLE) {
+          	//未解析时
+            inflate();
+        }
+    }
+}
+
+----> inflate@ViewStub:
+public View inflate() {
+    final ViewParent viewParent = getParent();
+
+    if (viewParent != null && viewParent instanceof ViewGroup) {
+        if (mLayoutResource != 0) {
+            final ViewGroup parent = (ViewGroup) viewParent;
+          	//布局文件的根view
+            final View view = inflateViewNoAdd(parent);
+            replaceSelfWithView(view, parent);
+						
+          	//保存到弱引用中
+            mInflatedViewRef = new WeakReference<>(view);
+            if (mInflateListener != null) {
+              	//监听回调
+                mInflateListener.onInflate(this, view);
+            }
+
+            return view;
+        } else {
+            throw new IllegalArgumentException("ViewStub must have a valid layoutResource");
+        }
+    } else {
+        throw new IllegalStateException("ViewStub must have a non-null ViewGroup viewParent");
+    }
+}
+
+----> inflateViewNoAdd@ViewStub:
+private View inflateViewNoAdd(ViewGroup parent) {
+    final LayoutInflater factory;
+    if (mInflater != null) {
+        factory = mInflater;
+    } else {
+        factory = LayoutInflater.from(mContext);
+    }
+  	//根据布局文件创建view
+    final View view = factory.inflate(mLayoutResource, parent, false);
+		//如果viewStub设置了id，将id设置给布局文件根view
+    if (mInflatedId != NO_ID) {
+        view.setId(mInflatedId);
+    }
+    return view;
+}
+
+----> replaceSelfWithView@ViewStub:
+private void replaceSelfWithView(View view, ViewGroup parent) {
+    final int index = parent.indexOfChild(this);
+  	//将自己从父view中移除
+    parent.removeViewInLayout(this);
+		
+  	//将布局文件的根view添加到自己的位置
+    final ViewGroup.LayoutParams layoutParams = getLayoutParams();
+    if (layoutParams != null) {
+        parent.addView(view, index, layoutParams);
+    } else {
+        parent.addView(view, index);
+    }
+}
+```
+
