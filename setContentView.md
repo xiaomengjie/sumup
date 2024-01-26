@@ -193,7 +193,7 @@ protected ViewGroup generateLayout(DecorView decor) {
     TypedArray a = getWindowStyle();
 		...
 		
-		//根据不同的布局模版，选择不同的布局文件（默认：R.layout.screen_simple）
+		//根据不同的配置，选择不同的布局文件（默认：R.layout.screen_simple）
     int layoutResource;
     int features = getLocalFeatures();
     ...
