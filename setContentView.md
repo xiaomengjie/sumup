@@ -1,5 +1,7 @@
 #### Activity的创建
 
+##### handleLaunchActivity@ActivityThread
+
 ```java
 --> handleLaunchActivity@ActivityThread
   
@@ -12,6 +14,8 @@ public Activity handleLaunchActivity(ActivityClientRecord r,
     return a;
 }
 ```
+
+##### performLaunchActivity@ActivityThread
 
 ```java
 --> performLaunchActivity@ActivityThread
@@ -73,6 +77,8 @@ private Activity performLaunchActivity(ActivityClientRecord r, Intent customInte
     return activity;
 }
 ```
+
+##### attach@Activity
 
 ```java
 --->attach@Activity
@@ -142,6 +148,10 @@ public void setContentView(int layoutResID) {
         mLayoutInflater.inflate(layoutResID, mContentParent);
     }
     ...
+    
+    //mContentParentExplicitlySet在requestFeature方法中会判断，如果为true，会抛出AndroidRuntimeException异常
+    //所以在activity中调用requestWindowFeature()时，必须在setContentView前面
+    mContentParentExplicitlySet = true;
 }
 ```
 
