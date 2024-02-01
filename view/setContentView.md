@@ -250,7 +250,7 @@ void onResourcesLoaded(LayoutInflater inflater, int layoutResource) {
 
 最终得到的图层为：
 
-![activity_setContentView](./images/activity_setContentView.png)
+![activity_setContentView](../images/activity_setContentView.png)
 
 #### AppCompatDelegateImpl.setContentView
 
@@ -380,7 +380,7 @@ public void setContentView(View view, ViewGroup.LayoutParams params) {
 
 最终得到的图层为：
 
-![appcompatdelegateimpl_setContentView](./images/appcompatdelegateimpl_setContentView.png)
+![appcompatdelegateimpl_setContentView](../images/appcompatdelegateimpl_setContentView.png)
 
 #### XML布局：
 

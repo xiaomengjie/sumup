@@ -189,21 +189,21 @@
 
   > **在自定属性名时，如果已经定义过了，如果在同一标签下，IDE会直接报错， has already been defined in this folder**
   >
-  > <img src="./images/same_mark.png">
+  > <img src="../images/same_mark.png">
   
   > **如果不在同一标签下，IDE虽然不会直接报错，但是在运行时会报错：Found item Attr/yoyoyoyoyo more than one time**
   >
-  > <img src="./images/different_mark.png">
+  > <img src="../images/different_mark.png">
 
   
   
   > **如果与依赖中的属性重复的话，好像会覆盖，使用自己定义的，但是这样做会带来无法预料的错误，不知道你覆盖的属性在那些地方用了**
   >
-  > ![constraint_top](./images/constraint_top.png)
+  > ![constraint_top](../images/constraint_top.png)
   >
   > 错误如下：
   >
-  > ![constraint_error](./images/constraint_erroe.png)
+  > ![constraint_error](../images/constraint_erroe.png)
   
   **所以别重复了，不能重复，一定记得**
 
